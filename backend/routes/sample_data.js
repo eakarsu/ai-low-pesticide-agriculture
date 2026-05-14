@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
-const verifyToken = require('../middleware/auth');
+const { verifyToken } = require('../middleware/auth');
 
 router.use(verifyToken);
 
