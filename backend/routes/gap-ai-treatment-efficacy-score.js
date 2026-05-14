@@ -13,7 +13,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { verifyToken } = require('../middleware/auth');
+const verifyToken = require("../middleware/auth");
 const pool = require('../db');
 
 router.use(verifyToken);
