@@ -18,6 +18,13 @@ import SearchPage from './components/SearchPage';
 import ActivityFeedPage from './components/ActivityFeedPage';
 import SampleDataPage from './components/SampleDataPage';
 import Dashboard from './components/Dashboard';
+import GapPestPhotoClassifier from './pages/GapPestPhotoClassifier';
+import GapSensorAnomaly from './pages/GapSensorAnomaly';
+import GapWeatherImpactForecast from './pages/GapWeatherImpactForecast';
+import GapCropRotationPlanner from './pages/GapCropRotationPlanner';
+import GapTreatmentEfficacyScore from './pages/GapTreatmentEfficacyScore';
+import CfResidueAuditTrail from './pages/CfResidueAuditTrail';
+import CfBiocontrolMarketplace from './pages/CfBiocontrolMarketplace';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token');
@@ -53,6 +60,13 @@ export default function App() {
                   <Route path="/utility/search" element={<SearchPage />} />
                   <Route path="/utility/activity" element={<ActivityFeedPage />} />
                   <Route path="/admin/sample-data" element={<SampleDataPage />} />
+                  <Route path="/audit/pest-photo-classifier" element={<GapPestPhotoClassifier />} />
+                  <Route path="/audit/sensor-anomaly" element={<GapSensorAnomaly />} />
+                  <Route path="/audit/spray-window" element={<GapWeatherImpactForecast />} />
+                  <Route path="/audit/crop-rotation" element={<GapCropRotationPlanner />} />
+                  <Route path="/audit/treatment-efficacy" element={<GapTreatmentEfficacyScore />} />
+                  <Route path="/audit/residue-audit" element={<CfResidueAuditTrail />} />
+                  <Route path="/audit/biocontrol-market" element={<CfBiocontrolMarketplace />} />
                 </Routes>
               </Layout>
             </PrivateRoute>

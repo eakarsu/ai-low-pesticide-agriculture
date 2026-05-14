@@ -3,7 +3,8 @@ import {
   Leaf, MapPin, Bug, FlaskConical, FileBarChart2,
   Cpu, CloudRain, Sparkles, LogOut, User,
   Wind, ShieldAlert, Mountain, Stethoscope,
-  Download, Search, Activity, Database, LayoutDashboard
+  Download, Search, Activity, Database, LayoutDashboard,
+  Camera, Gauge, Repeat, TrendingDown, ShoppingCart
 } from 'lucide-react';
 
 const navItems = [
@@ -31,6 +32,16 @@ const utilItems = [
   { path: '/utility/activity', label: 'Activity Feed', icon: Activity },
 ];
 
+const auditItems = [
+  { path: '/audit/pest-photo-classifier', label: 'Pest Classifier', icon: Camera },
+  { path: '/audit/sensor-anomaly', label: 'Sensor Anomaly', icon: Gauge },
+  { path: '/audit/spray-window', label: 'Spray Window', icon: Wind },
+  { path: '/audit/crop-rotation', label: 'Rotation Planner', icon: Repeat },
+  { path: '/audit/treatment-efficacy', label: 'Efficacy Score', icon: TrendingDown },
+  { path: '/audit/residue-audit', label: 'Residue / MRL', icon: ShieldAlert },
+  { path: '/audit/biocontrol-market', label: 'Biocontrol Market', icon: ShoppingCart },
+];
+
 const adminItems = [
   { path: '/admin/sample-data', label: 'Sample Data', icon: Database },
 ];
@@ -46,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     navigate('/login');
   };
 
-  const pageTitle = [...navItems, ...aiItems, ...utilItems, ...adminItems].find(i => location.pathname.startsWith(i.path))?.label || 'AgriSense';
+  const pageTitle = [...navItems, ...aiItems, ...utilItems, ...auditItems, ...adminItems].find(i => location.pathname.startsWith(i.path))?.label || 'AgriSense';
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -104,6 +115,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium mb-1 transition-colors ${
                 location.pathname.startsWith(path)
                   ? 'bg-teal-600 text-white'
+                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+              }`}
+            >
+              <Icon className="w-4 h-4 flex-shrink-0" />
+              {label}
+            </Link>
+          ))}
+
+          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2 mt-4">Audit Deep-Dives</div>
+          {auditItems.map(({ path, label, icon: Icon }) => (
+            <Link
+              key={path}
+              to={path}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium mb-1 transition-colors ${
+                location.pathname.startsWith(path)
+                  ? 'bg-rose-600 text-white'
                   : 'text-gray-400 hover:bg-gray-800 hover:text-white'
               }`}
             >
