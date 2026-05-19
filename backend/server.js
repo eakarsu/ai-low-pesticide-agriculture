@@ -35,6 +35,7 @@ app.use('/api/cf-biocontrol-marketplace', require('./routes/cf-biocontrol-market
 app.use('/api/cf-federated-weather', require('./routes/cf-federated-weather'));
 app.use('/api/cf-residue-audit-trail', require('./routes/cf-residue-audit-trail'));
 app.use('/api/cf-coop-heatmaps', require('./routes/cf-coop-heatmaps'));
+app.use('/api/custom-views', require('./routes/customViews'));
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });

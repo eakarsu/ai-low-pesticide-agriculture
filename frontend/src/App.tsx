@@ -25,6 +25,7 @@ import GapCropRotationPlanner from './pages/GapCropRotationPlanner';
 import GapTreatmentEfficacyScore from './pages/GapTreatmentEfficacyScore';
 import CfResidueAuditTrail from './pages/CfResidueAuditTrail';
 import CfBiocontrolMarketplace from './pages/CfBiocontrolMarketplace';
+import CustomViewsPage from './components/CustomViews/CustomViewsPage';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token');
@@ -67,6 +68,7 @@ export default function App() {
                   <Route path="/audit/treatment-efficacy" element={<GapTreatmentEfficacyScore />} />
                   <Route path="/audit/residue-audit" element={<CfResidueAuditTrail />} />
                   <Route path="/audit/biocontrol-market" element={<CfBiocontrolMarketplace />} />
+                  <Route path="/custom-views" element={<CustomViewsPage />} />
                 </Routes>
               </Layout>
             </PrivateRoute>
