@@ -168,4 +168,46 @@ router.get('/orders', async (_req, res) => {
   } catch (err) { res.json([]); }
 });
 
+router.post('/resistance-plan', async (req, res) => {
+  try {
+    const { target_pest, recent_modes = [], season_weeks = 8 } = req.body || {};
+    if (!target_pest) return res.status(400).json({ error: 'target_pest required' });
+
+    const catalog = await pool.query(
+      `SELECT common_name, scientific_name, category, target_pests, release_rate_per_ha
+         FROM beneficial_insects
+        WHERE target_pests ILIKE $1
+        ORDER BY common_name LIMIT 8`,
+      [`%${target_pest}%`]
+    );
+    const avoidedModes = new Set((recent_modes || []).map((x) => String(x).toLowerCase()));
+    const weeks = Math.max(2, Math.min(16, Number(season_weeks) || 8));
+    const calendar = [];
+    for (let week = 1; week <= weeks; week++) {
+      const useBiocontrol = week % 3 === 1 && catalog.rows.length > 0;
+      calendar.push({
+        week,
+        tactic: useBiocontrol ? 'biocontrol_release' : week % 3 === 2 ? 'cultural_control' : 'selective_chemistry',
+        recommendation: useBiocontrol
+          ? `Release ${catalog.rows[(week - 1) % catalog.rows.length].common_name} at label/catalog rate.`
+          : week % 3 === 2
+            ? 'Scout thresholds, remove crop residue hosts, and adjust irrigation to reduce pest-favorable humidity.'
+            : 'Use a selective chemistry only if scouting exceeds threshold; rotate away from recent mode-of-action groups.',
+      });
+    }
+
+    res.json({
+      target_pest,
+      avoided_modes: [...avoidedModes],
+      biocontrol_options: catalog.rows,
+      calendar,
+      resistance_principles: [
+        'Do not repeat the same insecticide mode of action in adjacent treatment windows.',
+        'Prefer biological or cultural controls when pressure is below economic threshold.',
+        'Reserve broad-spectrum chemistry for confirmed threshold exceedance to protect beneficials.',
+      ],
+    });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 module.exports = router;

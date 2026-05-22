@@ -141,3 +141,31 @@ Added a real, data-driven Dashboard as the first sidebar item and the post-login
 - No `npm install` / no new dependencies; uses existing `lucide-react` + `react-router-dom`.
 - Tailwind palette matches the rest of the app (green/emerald/amber/violet/teal/stone).
 - Log: `/Users/erolakarsu/projects/_AUDIT/apply3_logs/dashboard_ai-low-pesticide-agriculture.md`
+
+## Apply pass 7 (full backlog implementation)
+
+### Unaddressed items found
+The backend mounted 8 scaffolded route modules in `server.js` whose corresponding frontend pages existed under `frontend/src/pages/` but were not imported/routed in `App.tsx` and not surfaced in the sidebar `Layout.tsx`. End-users had no way to reach them through the UI.
+
+### Wired (frontend route + sidebar entry, all under "Audit Deep-Dives")
+- `/audit/coop-heatmaps`              → `CfCoopHeatmaps.tsx`            (POST `/api/cf-coop-heatmaps`)
+- `/audit/drone-vision`               → `CfDroneVisionPipeline.tsx`     (POST `/api/cf-drone-vision-pipeline`)
+- `/audit/federated-weather`          → `CfFederatedWeather.tsx`        (POST `/api/cf-federated-weather`)
+- `/audit/image-upload`               → `GapImageUpload.tsx`            (POST `/api/gap-nonai-image-upload`)
+- `/audit/multi-tenant-farms`         → `GapMultiTenantFarms.tsx`       (POST `/api/gap-nonai-multi-tenant-farms`)
+- `/audit/notifications`              → `GapNotifications.tsx`          (POST `/api/gap-nonai-notifications`)
+- `/audit/offline-sync`               → `GapOfflineSync.tsx`            (POST `/api/gap-nonai-offline-sync`)
+- `/audit/weather-providers`          → `GapWeatherProviders.tsx`       (POST `/api/gap-nonai-weather-providers`)
+
+### Files touched
+- `frontend/src/App.tsx` — 8 new imports, 8 new `<Route>` entries (inserted before existing `/custom-views` route, well before the catch-all)
+- `frontend/src/components/Layout.tsx` — 8 new `auditItems` entries with new lucide icons (`Map`, `Plane`, `Cloud`, `Image`, `Building2`, `Bell`, `RefreshCcw`, `Globe`)
+
+### Constraints satisfied
+- No new backend routes mounted (all 8 were already mounted in `server.js` before the 404 handler).
+- No new tables / no migrations (existing scaffolds use in-memory or no persistence).
+- No new dependencies (`lucide-react` already provides all icons).
+- No edits to feature page JSX/TSX content — only routing/import wiring.
+- `node --check` PASS on `backend/server.js` and the 8 mounted backend route files.
+- `esbuild --bundle=false` parse PASS on `frontend/src/App.tsx` and `frontend/src/components/Layout.tsx`.
+

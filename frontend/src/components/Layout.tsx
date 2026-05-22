@@ -5,7 +5,8 @@ import {
   Wind, ShieldAlert, Mountain, Stethoscope,
   Download, Search, Activity, Database, LayoutDashboard,
   Camera, Gauge, Repeat, TrendingDown, ShoppingCart,
-  LayoutGrid
+  LayoutGrid, Map, Plane, Cloud, Image, Building2,
+  Bell, RefreshCcw, Globe
 } from 'lucide-react';
 
 const navItems = [
@@ -41,6 +42,14 @@ const auditItems = [
   { path: '/audit/treatment-efficacy', label: 'Efficacy Score', icon: TrendingDown },
   { path: '/audit/residue-audit', label: 'Residue / MRL', icon: ShieldAlert },
   { path: '/audit/biocontrol-market', label: 'Biocontrol Market', icon: ShoppingCart },
+  { path: '/audit/coop-heatmaps', label: 'Coop Heatmaps', icon: Map },
+  { path: '/audit/drone-vision', label: 'Drone Vision', icon: Plane },
+  { path: '/audit/federated-weather', label: 'Federated Weather', icon: Cloud },
+  { path: '/audit/image-upload', label: 'Image Upload', icon: Image },
+  { path: '/audit/multi-tenant-farms', label: 'Multi-Tenant Farms', icon: Building2 },
+  { path: '/audit/notifications', label: 'Notifications', icon: Bell },
+  { path: '/audit/offline-sync', label: 'Offline Sync', icon: RefreshCcw },
+  { path: '/audit/weather-providers', label: 'Weather Providers', icon: Globe },
 ];
 
 const adminItems = [

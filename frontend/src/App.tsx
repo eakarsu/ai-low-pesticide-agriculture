@@ -25,7 +25,18 @@ import GapCropRotationPlanner from './pages/GapCropRotationPlanner';
 import GapTreatmentEfficacyScore from './pages/GapTreatmentEfficacyScore';
 import CfResidueAuditTrail from './pages/CfResidueAuditTrail';
 import CfBiocontrolMarketplace from './pages/CfBiocontrolMarketplace';
+import CfCoopHeatmaps from './pages/CfCoopHeatmaps';
+import CfDroneVisionPipeline from './pages/CfDroneVisionPipeline';
+import CfFederatedWeather from './pages/CfFederatedWeather';
+import GapImageUpload from './pages/GapImageUpload';
+import GapMultiTenantFarms from './pages/GapMultiTenantFarms';
+import GapNotifications from './pages/GapNotifications';
+import GapOfflineSync from './pages/GapOfflineSync';
+import GapWeatherProviders from './pages/GapWeatherProviders';
 import CustomViewsPage from './components/CustomViews/CustomViewsPage';
+
+import CodexCustomVizFeature from './pages/CodexCustomVizFeature';
+import CodexOperationsFeature from './pages/CodexOperationsFeature';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token');
@@ -36,6 +47,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/codex/custom-viz" element={<CodexCustomVizFeature />} />
+        <Route path="/codex/operations" element={<CodexOperationsFeature />} />
+
         <Route path="/login" element={<Login />} />
         <Route
           path="/*"
@@ -68,6 +82,14 @@ export default function App() {
                   <Route path="/audit/treatment-efficacy" element={<GapTreatmentEfficacyScore />} />
                   <Route path="/audit/residue-audit" element={<CfResidueAuditTrail />} />
                   <Route path="/audit/biocontrol-market" element={<CfBiocontrolMarketplace />} />
+                  <Route path="/audit/coop-heatmaps" element={<CfCoopHeatmaps />} />
+                  <Route path="/audit/drone-vision" element={<CfDroneVisionPipeline />} />
+                  <Route path="/audit/federated-weather" element={<CfFederatedWeather />} />
+                  <Route path="/audit/image-upload" element={<GapImageUpload />} />
+                  <Route path="/audit/multi-tenant-farms" element={<GapMultiTenantFarms />} />
+                  <Route path="/audit/notifications" element={<GapNotifications />} />
+                  <Route path="/audit/offline-sync" element={<GapOfflineSync />} />
+                  <Route path="/audit/weather-providers" element={<GapWeatherProviders />} />
                   <Route path="/custom-views" element={<CustomViewsPage />} />
                 </Routes>
               </Layout>

@@ -17,6 +17,7 @@ export default function CfBiocontrolMarketplace() {
   const [orders, setOrders] = useState<any[]>([]);
   const [form, setForm] = useState({ target_pest: 'Soybean Aphid', field_id: '', severity: 'medium' });
   const [result, setResult] = useState<any>(null);
+  const [resistancePlan, setResistancePlan] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -39,6 +40,21 @@ export default function CfBiocontrolMarketplace() {
         })
       });
       setResult(r);
+    } catch (e: any) { setError(e.message); } finally { setLoading(false); }
+  }
+
+  async function planResistance() {
+    setLoading(true); setError(''); setResistancePlan(null);
+    try {
+      const r = await api('/cf-biocontrol-marketplace/resistance-plan', {
+        method: 'POST',
+        body: JSON.stringify({
+          target_pest: form.target_pest,
+          recent_modes: ['pyrethroid', 'neonicotinoid'],
+          season_weeks: 8
+        })
+      });
+      setResistancePlan(r);
     } catch (e: any) { setError(e.message); } finally { setLoading(false); }
   }
 
@@ -89,9 +105,29 @@ export default function CfBiocontrolMarketplace() {
           {loading && <RefreshCcw className="w-4 h-4 animate-spin" />}
           {loading ? 'Searching...' : 'Recommend biocontrols'}
         </button>
+        <button type="button" onClick={planResistance} disabled={loading} className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-medium px-5 py-2 rounded-lg text-sm">
+          Resistance rotation plan
+        </button>
       </form>
 
       {error && <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-sm mb-4">{error}</div>}
+
+      {resistancePlan && (
+        <div className="bg-white border rounded-xl p-5 shadow-sm mb-6">
+          <h2 className="text-lg font-semibold mb-3">Resistance rotation plan for {resistancePlan.target_pest}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {resistancePlan.calendar.map((w: any) => (
+              <div key={w.week} className="border rounded-lg p-3">
+                <p className="font-semibold">Week {w.week}: {w.tactic.replaceAll('_', ' ')}</p>
+                <p className="text-sm text-gray-600 mt-1">{w.recommendation}</p>
+              </div>
+            ))}
+          </div>
+          <ul className="mt-4 text-sm text-gray-700 list-disc pl-5">
+            {resistancePlan.resistance_principles.map((p: string) => <li key={p}>{p}</li>)}
+          </ul>
+        </div>
+      )}
 
       {result && (
         <div className="bg-white border rounded-xl p-5 shadow-sm mb-6">
