@@ -34,9 +34,7 @@ import GapNotifications from './pages/GapNotifications';
 import GapOfflineSync from './pages/GapOfflineSync';
 import GapWeatherProviders from './pages/GapWeatherProviders';
 import CustomViewsPage from './components/CustomViews/CustomViewsPage';
-
-import CodexCustomVizFeature from './pages/CodexCustomVizFeature';
-import CodexOperationsFeature from './pages/CodexOperationsFeature';
+import FieldOperationsPage from './pages/FieldOperationsPage';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token');
@@ -44,12 +42,10 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const experimental = import.meta.env.DEV && import.meta.env.VITE_ENABLE_GENERATED_FEATURES === 'true';
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/codex/custom-viz" element={<CodexCustomVizFeature />} />
-        <Route path="/codex/operations" element={<CodexOperationsFeature />} />
-
         <Route path="/login" element={<Login />} />
         <Route
           path="/*"
@@ -65,32 +61,33 @@ export default function App() {
                   <Route path="/health-reports" element={<HealthReportsPage />} />
                   <Route path="/sensors" element={<SensorsPage />} />
                   <Route path="/weather" element={<WeatherPage />} />
-                  <Route path="/ai-center" element={<AICenter />} />
-                  <Route path="/ai/spray-window" element={<SprayWindowPage />} />
-                  <Route path="/ai/residue-risk" element={<ResidueRiskPage />} />
-                  <Route path="/ai/soil-health" element={<SoilHealthPage />} />
-                  <Route path="/ai/disease-early-warning" element={<DiseaseEarlyWarningPage />} />
-                  <Route path="/ai/beneficial-insects" element={<BeneficialInsectsPage />} />
+                  <Route path="/field-operations" element={<FieldOperationsPage />} />
+                  {experimental && <Route path="/ai-center" element={<AICenter />} />}
+                  {experimental && <Route path="/ai/spray-window" element={<SprayWindowPage />} />}
+                  {experimental && <Route path="/ai/residue-risk" element={<ResidueRiskPage />} />}
+                  {experimental && <Route path="/ai/soil-health" element={<SoilHealthPage />} />}
+                  {experimental && <Route path="/ai/disease-early-warning" element={<DiseaseEarlyWarningPage />} />}
+                  {experimental && <Route path="/ai/beneficial-insects" element={<BeneficialInsectsPage />} />}
                   <Route path="/utility/export" element={<ExportPage />} />
                   <Route path="/utility/search" element={<SearchPage />} />
                   <Route path="/utility/activity" element={<ActivityFeedPage />} />
-                  <Route path="/admin/sample-data" element={<SampleDataPage />} />
-                  <Route path="/audit/pest-photo-classifier" element={<GapPestPhotoClassifier />} />
-                  <Route path="/audit/sensor-anomaly" element={<GapSensorAnomaly />} />
-                  <Route path="/audit/spray-window" element={<GapWeatherImpactForecast />} />
-                  <Route path="/audit/crop-rotation" element={<GapCropRotationPlanner />} />
-                  <Route path="/audit/treatment-efficacy" element={<GapTreatmentEfficacyScore />} />
-                  <Route path="/audit/residue-audit" element={<CfResidueAuditTrail />} />
-                  <Route path="/audit/biocontrol-market" element={<CfBiocontrolMarketplace />} />
-                  <Route path="/audit/coop-heatmaps" element={<CfCoopHeatmaps />} />
-                  <Route path="/audit/drone-vision" element={<CfDroneVisionPipeline />} />
-                  <Route path="/audit/federated-weather" element={<CfFederatedWeather />} />
-                  <Route path="/audit/image-upload" element={<GapImageUpload />} />
-                  <Route path="/audit/multi-tenant-farms" element={<GapMultiTenantFarms />} />
-                  <Route path="/audit/notifications" element={<GapNotifications />} />
-                  <Route path="/audit/offline-sync" element={<GapOfflineSync />} />
-                  <Route path="/audit/weather-providers" element={<GapWeatherProviders />} />
-                  <Route path="/custom-views" element={<CustomViewsPage />} />
+                  {experimental && <Route path="/admin/sample-data" element={<SampleDataPage />} />}
+                  {experimental && <Route path="/audit/pest-photo-classifier" element={<GapPestPhotoClassifier />} />}
+                  {experimental && <Route path="/audit/sensor-anomaly" element={<GapSensorAnomaly />} />}
+                  {experimental && <Route path="/audit/spray-window" element={<GapWeatherImpactForecast />} />}
+                  {experimental && <Route path="/audit/crop-rotation" element={<GapCropRotationPlanner />} />}
+                  {experimental && <Route path="/audit/treatment-efficacy" element={<GapTreatmentEfficacyScore />} />}
+                  {experimental && <Route path="/audit/residue-audit" element={<CfResidueAuditTrail />} />}
+                  {experimental && <Route path="/audit/biocontrol-market" element={<CfBiocontrolMarketplace />} />}
+                  {experimental && <Route path="/audit/coop-heatmaps" element={<CfCoopHeatmaps />} />}
+                  {experimental && <Route path="/audit/drone-vision" element={<CfDroneVisionPipeline />} />}
+                  {experimental && <Route path="/audit/federated-weather" element={<CfFederatedWeather />} />}
+                  {experimental && <Route path="/audit/image-upload" element={<GapImageUpload />} />}
+                  {experimental && <Route path="/audit/multi-tenant-farms" element={<GapMultiTenantFarms />} />}
+                  {experimental && <Route path="/audit/notifications" element={<GapNotifications />} />}
+                  {experimental && <Route path="/audit/offline-sync" element={<GapOfflineSync />} />}
+                  {experimental && <Route path="/audit/weather-providers" element={<GapWeatherProviders />} />}
+                  {experimental && <Route path="/custom-views" element={<CustomViewsPage />} />}
                 </Routes>
               </Layout>
             </PrivateRoute>

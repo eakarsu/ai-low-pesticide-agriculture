@@ -6,7 +6,7 @@ import {
   Download, Search, Activity, Database, LayoutDashboard,
   Camera, Gauge, Repeat, TrendingDown, ShoppingCart,
   LayoutGrid, Map, Plane, Cloud, Image, Building2,
-  Bell, RefreshCcw, Globe
+  Bell, RefreshCcw, Globe, ClipboardList
 } from 'lucide-react';
 
 const navItems = [
@@ -17,6 +17,7 @@ const navItems = [
   { path: '/health-reports', label: 'Health Reports', icon: FileBarChart2 },
   { path: '/sensors', label: 'Sensor Devices', icon: Cpu },
   { path: '/weather', label: 'Weather', icon: CloudRain },
+  { path: '/field-operations', label: 'Field Operations', icon: ClipboardList },
 ];
 
 const aiItems = [
@@ -64,6 +65,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const experimental = import.meta.env.DEV && import.meta.env.VITE_ENABLE_GENERATED_FEATURES === 'true';
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -105,8 +107,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
 
-          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2 mt-4">AI Tools</div>
-          {aiItems.map(({ path, label, icon: Icon }) => (
+          {experimental && <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2 mt-4">AI Tools</div>}
+          {experimental && aiItems.map(({ path, label, icon: Icon }) => (
             <Link
               key={path}
               to={path}
@@ -137,8 +139,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
 
-          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2 mt-4">Audit Deep-Dives</div>
-          {auditItems.map(({ path, label, icon: Icon }) => (
+          {experimental && <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2 mt-4">Audit Deep-Dives</div>}
+          {experimental && auditItems.map(({ path, label, icon: Icon }) => (
             <Link
               key={path}
               to={path}
@@ -153,8 +155,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
 
-          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2 mt-4">Custom</div>
-          {customItems.map(({ path, label, icon: Icon }) => (
+          {experimental && <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2 mt-4">Custom</div>}
+          {experimental && customItems.map(({ path, label, icon: Icon }) => (
             <Link
               key={path}
               to={path}
@@ -169,8 +171,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
 
-          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2 mt-4">Dev Tools</div>
-          {adminItems.map(({ path, label, icon: Icon }) => (
+          {experimental && <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2 mt-4">Dev Tools</div>}
+          {experimental && adminItems.map(({ path, label, icon: Icon }) => (
             <Link
               key={path}
               to={path}

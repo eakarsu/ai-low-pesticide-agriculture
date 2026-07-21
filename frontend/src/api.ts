@@ -18,7 +18,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: 'Request failed' }));
-    throw new Error(err.error || 'Request failed');
+    throw new Error(err.message || err.error || 'Request failed');
   }
   return res.json();
 }
@@ -94,4 +94,14 @@ export const api = {
     ),
   activityFeed: (limit = 50) =>
     request<{ events: any[]; total: number }>(`/utility/activity?limit=${limit}`),
+
+  // Field operations
+  getServiceOrders: (status = '') => request<{ orders: any[]; limit: number }>(
+    `/field-operations/orders${status ? `?status=${encodeURIComponent(status)}` : ''}`
+  ),
+  getServiceOrder: (id: string) => request<any>(`/field-operations/orders/${encodeURIComponent(id)}`),
+  transitionServiceOrder: (id: string, data: any) => request<any>(
+    `/field-operations/orders/${encodeURIComponent(id)}/transitions`,
+    { method: 'POST', body: JSON.stringify(data) }
+  ),
 };

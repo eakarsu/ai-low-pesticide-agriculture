@@ -1,0 +1,41 @@
+name: field-operations
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_PASSWORD: test, POSTGRES_DB: agri_test }
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:test@127.0.0.1:5432/agri_test
+      TEST_DATABASE_URL: postgresql://postgres:test@127.0.0.1:5432/agri_test
+      JWT_SECRET: test-only-secret-with-at-least-32-characters
+      DEFAULT_TENANT_ID: ci
+      CORS_ORIGIN: http://localhost:5173
+      PROVIDER_WEBHOOK_SECRETS_JSON: '{"maps":"maps-webhook-secret-with-at-least-32-characters","calendar":"calendar-webhook-secret-at-least-32-characters","messaging":"messaging-webhook-secret-at-least-32-characters","payment":"payment-webhook-secret-at-least-32-characters","tax":"tax-webhook-secret-with-at-least-32-characters","accounting":"accounting-webhook-secret-at-least-32-characters"}'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with: { node-version: 24, cache: npm, cache-dependency-path: '**/package-lock.json' }
+      - run: npm ci
+        working-directory: backend
+      - run: npm ci
+        working-directory: frontend
+      - run: ALLOW_SCHEMA_MIGRATION=1 ./start.sh migrate
+      - name: Prove migrations replay safely
+        run: ALLOW_SCHEMA_MIGRATION=1 ./start.sh migrate
+      - run: ./start.sh check
+      - name: Audit backend production dependencies
+        run: npm audit --omit=dev --audit-level=moderate
+        working-directory: backend
+      - name: Audit frontend production dependencies
+        run: npm audit --omit=dev --audit-level=moderate
+        working-directory: frontend
