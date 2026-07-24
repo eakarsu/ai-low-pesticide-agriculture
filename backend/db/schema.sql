@@ -142,9 +142,10 @@ CREATE TABLE IF NOT EXISTS mrl_tolerances (
   active_ingredient VARCHAR(255) NOT NULL,
   mrl_ppm DECIMAL(10,4),
   regulatory_body VARCHAR(50) DEFAULT 'US EPA',
-  cfr_section VARCHAR(50),
+  cfr_section TEXT,
   UNIQUE (crop, active_ingredient, regulatory_body)
 );
+ALTER TABLE mrl_tolerances ALTER COLUMN cfr_section TYPE TEXT;
 CREATE INDEX IF NOT EXISTS idx_mrl_crop_ai ON mrl_tolerances(crop, active_ingredient);
 
 -- Beneficial insect catalog for biocontrol marketplace + IPM planning.

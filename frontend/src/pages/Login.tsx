@@ -27,8 +27,8 @@ export default function Login() {
   };
 
   const demoLogin = () => {
-    setEmail('admin@demo.com');
-    setPassword('demo123');
+    setEmail(import.meta.env.VITE_DEMO_EMAIL || '');
+    setPassword(import.meta.env.VITE_DEMO_PASSWORD || '');
     setTimeout(() => {
       document.getElementById('login-form')?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
     }, 100);
