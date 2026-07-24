@@ -35,6 +35,7 @@ app.use('/api/sensors', require('./routes/sensors'));
 app.use('/api/weather', require('./routes/weather'));
 app.use('/api/utility', require('./routes/utility'));
 app.use('/api/dashboard', require('./routes/dashboard'));
+app.use('/api/application-ai', require('./routes/applicationAi'));
 
 const generatedEnabled = process.env.ENABLE_GENERATED_FEATURES === 'true' && process.env.NODE_ENV !== 'production';
 if (generatedEnabled) {
