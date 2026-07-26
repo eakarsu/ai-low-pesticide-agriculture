@@ -99,6 +99,9 @@ case "$mode" in
     done
     [ -d "$ROOT_DIR/backend/node_modules" ] || { echo 'backend dependencies missing; install explicitly' >&2; exit 1; }
     [ -d "$ROOT_DIR/frontend/node_modules" ] || { echo 'frontend dependencies missing; install explicitly' >&2; exit 1; }
+    if [ "${NODE_ENV:-development}" != production ] && [ "${ENABLE_DEMO_CREDENTIAL_AUTOFILL:-true}" = true ]; then
+      BOOTSTRAP_ACKNOWLEDGEMENT=create-initial-admin node "$ROOT_DIR/backend/scripts/create-admin.js"
+    fi
     echo "Starting AgriSense API on $BACKEND_PORT and UI on $FRONTEND_PORT; persistent state is unchanged."
     exec node "$ROOT_DIR/runtime-launcher.js"
     ;;
