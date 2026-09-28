@@ -29,9 +29,6 @@ export default function Login() {
   const demoLogin = () => {
     setEmail(import.meta.env.VITE_DEMO_EMAIL || '');
     setPassword(import.meta.env.VITE_DEMO_PASSWORD || '');
-    setTimeout(() => {
-      document.getElementById('login-form')?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-    }, 100);
   };
 
   return (
@@ -92,7 +89,7 @@ export default function Login() {
               onClick={demoLogin}
               className="w-full border border-green-300 text-green-700 hover:bg-green-50 font-medium py-2.5 rounded-lg text-sm transition-colors"
             >
-              Demo Login (admin@demo.com)
+              Auto Fill Demo Credentials
             </button>
           </div>
         </div>
