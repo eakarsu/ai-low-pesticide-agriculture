@@ -1,0 +1,58 @@
+[
+  {
+    "name": "CfCoopHeatmaps",
+    "id": "cf-coop-heatmaps",
+    "title": "Cooperative Pest-Pressure Heatmaps",
+    "description": "Prepare a professional advisory report for cooperative pest-pressure heatmaps using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "CfDroneVisionPipeline",
+    "id": "cf-drone-vision-pipeline",
+    "title": "Drone+Satellite Vision Pipeline",
+    "description": "Prepare a professional advisory report for drone+satellite vision pipeline using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "CfFederatedWeather",
+    "id": "cf-federated-weather",
+    "title": "Federated Weather Aggregation",
+    "description": "Prepare a professional advisory report for federated weather aggregation using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "GapImageUpload",
+    "id": "gap-nonai-image-upload",
+    "title": "Image / File Upload",
+    "description": "Prepare a professional advisory report for image / file upload using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "GapMultiTenantFarms",
+    "id": "gap-nonai-multi-tenant-farms",
+    "title": "Multi-Tenant Farm Separation",
+    "description": "Prepare a professional advisory report for multi-tenant farm separation using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "GapNotifications",
+    "id": "gap-nonai-notifications",
+    "title": "Notifications & Alerts",
+    "description": "Prepare a professional advisory report for notifications & alerts using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "GapOfflineSync",
+    "id": "gap-nonai-offline-sync",
+    "title": "Mobile / Offline Sync",
+    "description": "Prepare a professional advisory report for mobile / offline sync using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "GapWeatherProviders",
+    "id": "gap-nonai-weather-providers",
+    "title": "Third-Party Weather Providers",
+    "description": "Prepare a professional advisory report for third-party weather providers using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  }
+]

@@ -1,3 +1,5 @@
+
+import FullAIExamples, { useFullAIExamples } from "./FullAIExamples";
 import { useState } from 'react';
 import { Sparkles, Bug, BarChart3, FlaskConical, FileText } from 'lucide-react';
 import { api } from '../api';
@@ -21,13 +23,13 @@ const tools: AITool[] = [
     icon: Bug,
     color: 'bg-orange-100 text-orange-600',
     fields: [
-      { key: 'field_id', label: 'Field ID', type: 'number', placeholder: '1' },
+      { key: 'field_id', label: 'Existing field ID', type: 'number', placeholder: 'Select a real field ID' },
       { key: 'pest_names', label: 'Pest Names (comma-separated)', type: 'text', placeholder: 'Aphids, Corn Earworm' },
     ],
     samples: [
-      { label: 'Strawberry pests', values: { field_id: '1', pest_names: 'Lygus bug, Two-spotted spider mite, Aphids' } },
-      { label: 'Almond pests', values: { field_id: '2', pest_names: 'Navel orangeworm, Peach twig borer, Web-spinning mite' } },
-      { label: 'Vineyard pests', values: { field_id: '3', pest_names: 'Vine mealybug, Pacific spider mite, Western grape leafhopper' } },
+      { label: 'Strawberry pests', values: { pest_names: 'Lygus bug, Two-spotted spider mite, Aphids' } },
+      { label: 'Almond pests', values: { pest_names: 'Navel orangeworm, Peach twig borer, Web-spinning mite' } },
+      { label: 'Vineyard pests', values: { pest_names: 'Vine mealybug, Pacific spider mite, Western grape leafhopper' } },
     ],
   },
   {
@@ -37,14 +39,14 @@ const tools: AITool[] = [
     icon: BarChart3,
     color: 'bg-blue-100 text-blue-600',
     fields: [
-      { key: 'field_id', label: 'Field ID', type: 'number', placeholder: '1' },
+      { key: 'field_id', label: 'Existing field ID', type: 'number', placeholder: 'Select a real field ID' },
       { key: 'crop_type', label: 'Crop Type', type: 'text', placeholder: 'corn' },
       { key: 'health_score', label: 'Current Health Score', type: 'number', placeholder: '80' },
     ],
     samples: [
-      { label: 'Strawberry healthy', values: { field_id: '1', crop_type: 'strawberry', health_score: '88' } },
-      { label: 'Almond stressed', values: { field_id: '2', crop_type: 'almond', health_score: '64' } },
-      { label: 'Lettuce vigorous', values: { field_id: '4', crop_type: 'lettuce', health_score: '92' } },
+      { label: 'Strawberry healthy', values: { crop_type: 'strawberry', health_score: '88' } },
+      { label: 'Almond stressed', values: { crop_type: 'almond', health_score: '64' } },
+      { label: 'Lettuce vigorous', values: { crop_type: 'lettuce', health_score: '92' } },
     ],
   },
   {
@@ -54,13 +56,13 @@ const tools: AITool[] = [
     icon: FlaskConical,
     color: 'bg-purple-100 text-purple-600',
     fields: [
-      { key: 'field_id', label: 'Field ID', type: 'number', placeholder: '1' },
+      { key: 'field_id', label: 'Existing field ID', type: 'number', placeholder: 'Select a real field ID' },
       { key: 'pest_detections', label: 'Pest Detections (describe)', type: 'text', placeholder: 'High aphid pressure in northeast, medium armyworm in center' },
     ],
     samples: [
-      { label: 'Codling moth orchard', values: { field_id: '5', pest_detections: 'High codling moth trap counts (28/trap/wk) in apple block, low overall powdery mildew pressure, beneficial lacewing population intact.' } },
-      { label: 'Aphid + mite strawberry', values: { field_id: '1', pest_detections: 'Heavy aphid colonies on outer rows, two-spotted spider mite hot spots in center, Lygus bug counts 1.2/sweep, lady beetles present.' } },
-      { label: 'NOW almond hull split', values: { field_id: '2', pest_detections: 'Navel orangeworm egg traps rising at hull split, mummy load 1.8/tree from sanitation, peach twig borer adults in pheromone traps.' } },
+      { label: 'Codling moth orchard', values: { pest_detections: 'High codling moth trap counts (28/trap/wk) in apple block, low overall powdery mildew pressure, beneficial lacewing population intact.' } },
+      { label: 'Aphid + mite strawberry', values: { pest_detections: 'Heavy aphid colonies on outer rows, two-spotted spider mite hot spots in center, Lygus bug counts 1.2/sweep, lady beetles present.' } },
+      { label: 'NOW almond hull split', values: { pest_detections: 'Navel orangeworm egg traps rising at hull split, mummy load 1.8/tree from sanitation, peach twig borer adults in pheromone traps.' } },
     ],
   },
   {
@@ -70,12 +72,12 @@ const tools: AITool[] = [
     icon: FileText,
     color: 'bg-green-100 text-green-600',
     fields: [
-      { key: 'field_id', label: 'Field ID', type: 'number', placeholder: '1' },
+      { key: 'field_id', label: 'Existing field ID', type: 'number', placeholder: 'Select a real field ID' },
     ],
     samples: [
-      { label: 'Strawberry field 1', values: { field_id: '1' } },
-      { label: 'Almond field 2', values: { field_id: '2' } },
-      { label: 'Vineyard field 3', values: { field_id: '3' } },
+      { label: 'Strawberry field review', values: {} },
+      { label: 'Almond field review', values: {} },
+      { label: 'Vineyard field review', values: {} },
     ],
   },
 ];
@@ -88,6 +90,8 @@ interface HistoryItem {
 }
 
 export default function AICenter() {
+  const fullAIExamples = useFullAIExamples();
+
   const [formValues, setFormValues] = useState<Record<string, Record<string, string>>>({});
   const [loadingTool, setLoadingTool] = useState<string | null>(null);
   const [results, setResults] = useState<Record<string, string>>({});
@@ -98,6 +102,11 @@ export default function AICenter() {
   };
 
   const runTool = async (tool: AITool) => {
+    const fieldId = Number(formValues[tool.id]?.field_id);
+    if (!Number.isInteger(fieldId) || fieldId <= 0) {
+      setResults(prev => ({ ...prev, [tool.id]: 'Select or enter an existing field ID before generating.' }));
+      return;
+    }
     setLoadingTool(tool.id);
     setResults(prev => ({ ...prev, [tool.id]: '' }));
     try {
@@ -106,25 +115,25 @@ export default function AICenter() {
 
       if (tool.id === 'pest-analysis') {
         const { result: r } = await api.pestAnalysis({
-          field_id: parseInt(values.field_id || '1'),
+          field_id: fieldId,
           detections: [{ pest_name: values.pest_names || 'Unknown pest', severity: 'medium' }],
         });
         result = r;
       } else if (tool.id === 'yield-prediction') {
         const { result: r } = await api.yieldPrediction({
-          field_id: parseInt(values.field_id || '1'),
+          field_id: fieldId,
           health_data: { health_score: parseInt(values.health_score || '75'), crop_type: values.crop_type },
           weather_data: {},
         });
         result = r;
       } else if (tool.id === 'treatment-plan') {
         const { result: r } = await api.treatmentPlan({
-          field_id: parseInt(values.field_id || '1'),
+          field_id: fieldId,
           pest_detections: [{ description: values.pest_detections }],
         });
         result = r;
       } else if (tool.id === 'field-summary') {
-        const { result: r } = await api.fieldSummary({ field_id: parseInt(values.field_id || '1') });
+        const { result: r } = await api.fieldSummary({ field_id: fieldId });
         result = r;
       }
 
@@ -138,7 +147,7 @@ export default function AICenter() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6" data-full-ai-workspace="AICenter"><FullAIExamples controller={fullAIExamples} />
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-10 h-10 bg-violet-100 rounded-xl flex items-center justify-center">
@@ -178,7 +187,7 @@ export default function AICenter() {
                       <button
                         key={i}
                         type="button"
-                        onClick={() => setFormValues(prev => ({ ...prev, [tool.id]: s.values }))}
+                        onClick={() => setFormValues(prev => ({ ...prev, [tool.id]: { ...s.values, field_id: prev[tool.id]?.field_id || '' } }))}
                         className="px-3 py-1.5 text-xs bg-violet-50 hover:bg-violet-100 text-violet-700 border border-violet-200 rounded-full transition-colors"
                       >
                         {s.label}
@@ -197,7 +206,7 @@ export default function AICenter() {
                       value={values[field.key] || ''}
                       onChange={e => setField(tool.id, field.key, e.target.value)}
                       placeholder={field.placeholder}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-violet-500 outline-none"
+                      className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-violet-500 outline-none" data-full-ai-field={fullAIExamples.bind({ current: values[field.key] || '', change: e => setField(tool.id, field.key, e.target.value), label: "values[field.key]", manual: false, json: false }, "p1-8689", [(typeof tool === 'object' ? (tool as any)?.key ?? (tool as any)?.name ?? (tool as any)?.id ?? '' : tool),(typeof field === 'object' ? (field as any)?.key ?? (field as any)?.name ?? (field as any)?.id ?? '' : field),field.key].join(":"))}
                     />
                   </div>
                 ))}
@@ -235,7 +244,7 @@ export default function AICenter() {
                   <span className="font-medium text-sm text-gray-900">{item.title}</span>
                   <span className="text-xs text-gray-400">{item.timestamp.toLocaleTimeString()}</span>
                 </div>
-                <p className="text-sm text-gray-600 line-clamp-2">{item.content.slice(0, 150)}...</p>
+                <details><summary className="text-sm text-violet-700 cursor-pointer">Open result</summary><AIResponse content={item.content} title={item.title} isLoading={false} /></details>
               </div>
             ))}
           </div>

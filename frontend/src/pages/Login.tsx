@@ -26,9 +26,19 @@ export default function Login() {
     }
   };
 
-  const demoLogin = () => {
-    setEmail(import.meta.env.VITE_DEMO_EMAIL || '');
-    setPassword(import.meta.env.VITE_DEMO_PASSWORD || '');
+  const demoLogin = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      const { token, user } = await api.demoLogin();
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      navigate('/');
+    } catch (err: any) {
+      setError(err.message || 'Demo login unavailable');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -86,10 +96,12 @@ export default function Login() {
 
           <div className="mt-4">
             <button
+              type="button"
               onClick={demoLogin}
+              disabled={loading}
               className="w-full border border-green-300 text-green-700 hover:bg-green-50 font-medium py-2.5 rounded-lg text-sm transition-colors"
             >
-              Auto Fill Demo Credentials
+              {loading ? 'Signing in...' : 'Sign in with demo account'}
             </button>
           </div>
         </div>

@@ -1,3 +1,5 @@
+
+import FullAIExamples, { useFullAIExamples } from "./FullAIExamples";
 import { useState } from 'react';
 import { Sparkles, AlertTriangle } from 'lucide-react';
 import AIResponse from './AIResponse';
@@ -36,6 +38,8 @@ export default function AIToolPage({
   callApi,
   samples,
 }: AIToolPageProps) {
+  const fullAIExamples = useFullAIExamples();
+
   const [values, setValues] = useState<Record<string, string>>({});
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
@@ -66,7 +70,7 @@ export default function AIToolPage({
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6" data-full-ai-workspace="AIToolPage"><FullAIExamples controller={fullAIExamples} disabled={Boolean(loading)} />
       <div className="mb-6 flex items-start gap-3">
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${iconColor}`}>
           <Icon className="w-5 h-5" />
@@ -88,7 +92,7 @@ export default function AIToolPage({
                   <button
                     key={i}
                     type="button"
-                    onClick={() => setValues(s.values)}
+                    onClick={() => setValues(prev => ({ ...s.values, ...(fields.some(field => field.key === 'field_id') ? { field_id: prev.field_id || '' } : {}) }))}
                     className="px-3 py-1.5 text-xs bg-violet-50 hover:bg-violet-100 text-violet-700 border border-violet-200 rounded-full transition-colors"
                   >
                     {s.label}
@@ -107,7 +111,7 @@ export default function AIToolPage({
                     onChange={e => setField(f.key, e.target.value)}
                     placeholder={f.placeholder}
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-violet-500 outline-none"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-violet-500 outline-none" data-full-ai-field={fullAIExamples.bind({ current: values[f.key] || '', change: e => setField(f.key, e.target.value), label: "values[f.key]", manual: false, json: false }, "p1-3307", [(typeof f === 'object' ? (f as any)?.key ?? (f as any)?.name ?? (f as any)?.id ?? '' : f),f.key].join(":"))}
                   />
                 ) : (
                   <input
@@ -115,7 +119,7 @@ export default function AIToolPage({
                     value={values[f.key] || ''}
                     onChange={e => setField(f.key, e.target.value)}
                     placeholder={f.placeholder}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-violet-500 outline-none"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-violet-500 outline-none" data-full-ai-field={fullAIExamples.bind({ current: values[f.key] || '', change: e => setField(f.key, e.target.value), label: "values[f.key]", manual: false, json: false }, "p1-3710", [(typeof f === 'object' ? (f as any)?.key ?? (f as any)?.name ?? (f as any)?.id ?? '' : f),f.key].join(":"))}
                   />
                 )}
               </div>

@@ -1,3 +1,4 @@
+import AIReportLibrary from "./AIReportLibrary";
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import {
   Leaf, MapPin, Bug, FlaskConical, FileBarChart2,
@@ -202,7 +203,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
           </div>
         </div>
-      </aside>
+      <AIReportLibrary /></aside>
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">

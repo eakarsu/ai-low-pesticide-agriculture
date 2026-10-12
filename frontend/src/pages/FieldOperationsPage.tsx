@@ -16,6 +16,7 @@ export default function FieldOperationsPage() {
   async function refresh(selectId?: string) {
     try {
       const result = await api.getServiceOrders();
+      if (!Array.isArray(result.orders)) throw new Error('Unexpected service orders response');
       setOrders(result.orders);
       if (selectId) setSelected(await api.getServiceOrder(selectId));
       setError('');

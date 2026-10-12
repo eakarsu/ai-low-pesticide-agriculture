@@ -112,7 +112,7 @@ router.get('/stats', async (req, res) => {
 
     res.json({
       counts,
-      recent_activity: events.slice(0, 10),
+      recent_activity: events.slice(0, 15),
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -23,51 +23,59 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json();
 }
 
+async function requestList<T>(path: string): Promise<T[]> {
+  const payload: unknown = await request<unknown>(path);
+  if (Array.isArray(payload)) return payload;
+  if (payload && typeof payload === 'object' && 'data' in payload && Array.isArray(payload.data)) return payload.data;
+  throw new Error(`Unexpected list response from ${path}`);
+}
+
 export const api = {
   login: (email: string, password: string) =>
     request<{ token: string; user: any }>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     }),
+  demoLogin: () => request<{ token: string; user: any }>('/auth/demo', { method: 'POST' }),
   me: () => request<any>('/auth/me'),
 
   // Fields
-  getFields: () => request<any[]>('/fields'),
+  getFields: () => requestList<any>('/fields'),
   getField: (id: number) => request<any>(`/fields/${id}`),
   createField: (data: any) => request<any>('/fields', { method: 'POST', body: JSON.stringify(data) }),
   updateField: (id: number, data: any) => request<any>(`/fields/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteField: (id: number) => request<any>(`/fields/${id}`, { method: 'DELETE' }),
 
   // Detections
-  getDetections: () => request<any[]>('/detections'),
+  getDetections: () => requestList<any>('/detections'),
   getDetection: (id: number) => request<any>(`/detections/${id}`),
   createDetection: (data: any) => request<any>('/detections', { method: 'POST', body: JSON.stringify(data) }),
   updateDetection: (id: number, data: any) => request<any>(`/detections/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteDetection: (id: number) => request<any>(`/detections/${id}`, { method: 'DELETE' }),
 
   // Treatments
-  getTreatments: () => request<any[]>('/treatments'),
+  getTreatments: () => requestList<any>('/treatments'),
   getTreatment: (id: number) => request<any>(`/treatments/${id}`),
   createTreatment: (data: any) => request<any>('/treatments', { method: 'POST', body: JSON.stringify(data) }),
   updateTreatment: (id: number, data: any) => request<any>(`/treatments/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteTreatment: (id: number) => request<any>(`/treatments/${id}`, { method: 'DELETE' }),
 
   // Health Reports
-  getHealthReports: () => request<any[]>('/health-reports'),
+  getHealthReports: () => requestList<any>('/health-reports'),
   getHealthReport: (id: number) => request<any>(`/health-reports/${id}`),
   createHealthReport: (data: any) => request<any>('/health-reports', { method: 'POST', body: JSON.stringify(data) }),
   updateHealthReport: (id: number, data: any) => request<any>(`/health-reports/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteHealthReport: (id: number) => request<any>(`/health-reports/${id}`, { method: 'DELETE' }),
 
   // Sensors
-  getSensors: () => request<any[]>('/sensors'),
+  getSensors: () => requestList<any>('/sensors'),
   getSensor: (id: number) => request<any>(`/sensors/${id}`),
   createSensor: (data: any) => request<any>('/sensors', { method: 'POST', body: JSON.stringify(data) }),
   updateSensor: (id: number, data: any) => request<any>(`/sensors/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteSensor: (id: number) => request<any>(`/sensors/${id}`, { method: 'DELETE' }),
 
   // Weather
-  getWeather: () => request<any[]>('/weather'),
+  getWeather: () => requestList<any>('/weather'),
   getWeatherItem: (id: number) => request<any>(`/weather/${id}`),
   createWeather: (data: any) => request<any>('/weather', { method: 'POST', body: JSON.stringify(data) }),
   updateWeather: (id: number, data: any) => request<any>(`/weather/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
