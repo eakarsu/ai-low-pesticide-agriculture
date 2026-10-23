@@ -26,6 +26,8 @@ app.get('/health/ready', async (_req, res) => {
 });
 
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/tasks', require('./routes/tasks'));
+app.use('/api/wave59a', require('./routes/wave59a'));
 app.use('/api/field-operations', require('./routes/fieldOperations'));
 app.use('/api/fields', require('./routes/fields'));
 app.use('/api/detections', require('./routes/detections'));

@@ -8,7 +8,8 @@ router.use(verifyToken);
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM fields ORDER BY created_at DESC');
-    res.json(result.rows);
+    const { filterFields } = require('../wave59a.cjs');
+    res.json(filterFields(result.rows, req.query || {}));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
